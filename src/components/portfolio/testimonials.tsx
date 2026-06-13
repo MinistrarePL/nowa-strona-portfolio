@@ -21,7 +21,7 @@ export function Testimonials() {
             className="border-emerald-300 bg-emerald-300 text-black shadow-none hover:bg-emerald-200 hover:text-black before:hidden"
             asChild
           >
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+            <a href="https://www.linkedin.com/in/mateuszglasek/" target="_blank" rel="noreferrer">
               See more on LinkedIn
             </a>
           </GlassButton>

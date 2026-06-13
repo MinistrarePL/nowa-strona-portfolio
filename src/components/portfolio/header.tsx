@@ -1,4 +1,7 @@
+"use client";
+
 import { Container } from "@/components/layout/container";
+import { smoothScrollToHash } from "@/lib/smooth-scroll";
 
 const navItems = [
   { label: "Offer", href: "#offer" },
@@ -18,7 +21,12 @@ export function Header() {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="text-[clamp(0.875rem,1.6vh,1.125rem)] text-white/70 transition-colors hover:text-emerald-300"
+                  className="text-[18px] text-white/70 transition-colors hover:text-emerald-300"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    smoothScrollToHash(item.href);
+                    window.history.pushState(null, "", item.href);
+                  }}
                 >
                   {item.label}
                 </a>
