@@ -1,4 +1,5 @@
 import { Container } from "@/components/layout/container";
+import { sectionTitleClassName } from "@/components/layout/section-styles";
 import Image from "next/image";
 
 const companies = [
@@ -26,13 +27,11 @@ const companies = [
 
 export function WorkedFor() {
   return (
-    <section className="bg-black py-20 md:py-24">
+    <section className="bg-black pb-20 md:pb-24">
       <Container>
-        <h2 className="text-center text-3xl text-white md:text-4xl lg:text-5xl">
-          I worked for
-        </h2>
+        <h2 className={sectionTitleClassName}>I worked for</h2>
 
-        <ul className="mt-12 grid grid-cols-4 items-center gap-x-[clamp(0.375rem,1.5vw,1.5rem)] md:mt-14">
+        <ul className="mt-10 grid grid-cols-4 items-center gap-x-[clamp(0.375rem,1.5vw,1.5rem)] md:mt-12">
           {companies.map((company) => (
             <li key={company.name} className="group flex min-w-0 justify-center">
               <Image

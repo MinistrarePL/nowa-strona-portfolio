@@ -2,17 +2,16 @@
 
 import { TestimonialsCarousel } from "@/components/portfolio/testimonials-carousel";
 import { Container } from "@/components/layout/container";
+import { sectionTitleClassName } from "@/components/layout/section-styles";
 import { GlassButton } from "@/components/ui/glass-button";
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="bg-black py-24 md:py-32">
+    <section id="testimonials" className="bg-black">
       <Container>
-        <h2 className="text-center text-4xl text-white md:text-5xl lg:text-6xl">
-          Received Testimonials
-        </h2>
+        <h2 className={sectionTitleClassName}>Received Testimonials</h2>
 
-        <div className="mt-14 flex justify-center">
+        <div className="mt-10 flex justify-center md:mt-12">
           <TestimonialsCarousel />
         </div>
 

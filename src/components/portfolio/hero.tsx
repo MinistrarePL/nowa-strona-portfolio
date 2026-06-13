@@ -10,6 +10,7 @@ const tags = ["#finance", "#fintech", "#investing"] as const;
 
 const MAX_SCALE = 1.35;
 const MIN_SCALE = 0.45;
+const HERO_CONTENT_SCALE = 0.85;
 
 export function Hero() {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -52,11 +53,11 @@ export function Hero() {
           );
         };
 
-        while (measureOverflow(nextScale) > 1 && nextScale > MIN_SCALE) {
+        while (measureOverflow(nextScale * HERO_CONTENT_SCALE) > 1 && nextScale > MIN_SCALE) {
           nextScale = Math.max(MIN_SCALE, nextScale - 0.02);
         }
 
-        setScale(nextScale);
+        setScale(nextScale * HERO_CONTENT_SCALE);
       });
     };
 
@@ -110,17 +111,17 @@ export function Hero() {
                 />
               </div>
 
-              <h1 className="mt-[clamp(0.75rem,2.5vh,2.5rem)] text-[clamp(2.75rem,9.5vh,7rem)] leading-none tracking-tight text-white">
+              <h1 className="mt-[clamp(0.875rem,3vh,2.75rem)] text-[clamp(2.75rem,9.5vh,7rem)] leading-none tracking-tight text-white">
                 Hello!
               </h1>
 
-              <p className="mt-[clamp(0.5rem,1.5vh,1.75rem)] text-[clamp(0.9375rem,2.4vh,1.625rem)] leading-[1.45] text-white/75">
+              <p className="mt-[clamp(0.625rem,2vh,2rem)] text-[clamp(0.9375rem,2.4vh,1.625rem)] leading-[1.5] text-white/75">
                 I am Lead Product Designer focused on delivering value to both the user and the
                 business, while working within the available budget and technology constraints.
                 It&apos;s as simple as that.
               </p>
 
-              <div className="mt-[clamp(0.5rem,1.5vh,2rem)] flex flex-wrap items-center justify-center gap-x-[clamp(0.75rem,2vw,1.5rem)] gap-y-2">
+              <div className="mt-[clamp(0.625rem,2vh,2.25rem)] flex flex-wrap items-center justify-center gap-x-[clamp(0.75rem,2vw,1.5rem)] gap-y-2">
                 {tags.map((tag) => (
                   <span
                     key={tag}
@@ -133,7 +134,7 @@ export function Hero() {
 
               <button
                 type="button"
-                className="mt-[clamp(0.75rem,2vh,2.5rem)] shrink-0 rounded-full border-2 border-emerald-300 px-[clamp(1.75rem,4vw,2.5rem)] py-[clamp(0.625rem,1.2vh,1rem)] text-[clamp(0.9375rem,1.8vh,1.125rem)] font-medium text-emerald-300 transition-colors hover:bg-emerald-300/10"
+                className="mt-[clamp(0.875rem,2.5vh,2.75rem)] shrink-0 rounded-full border-2 border-emerald-300 px-[clamp(1.75rem,4vw,2.5rem)] py-[clamp(0.625rem,1.2vh,1rem)] text-[clamp(0.9375rem,1.8vh,1.125rem)] font-medium text-emerald-300 transition-colors hover:bg-emerald-300/10"
               >
                 More
               </button>

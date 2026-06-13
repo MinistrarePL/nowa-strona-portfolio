@@ -27,7 +27,7 @@ const offers = [
 
 export function Offer() {
   return (
-    <section id="offer" className="relative isolate overflow-hidden bg-black pb-20 pt-8 md:pb-24 md:pt-12">
+    <section id="offer" className="relative isolate overflow-hidden bg-black">
       <div className="pointer-events-none absolute inset-0 bg-black" />
 
       <div className="pointer-events-none absolute inset-0">
