@@ -4,6 +4,7 @@ import { Contact } from "@/components/portfolio/contact";
 import { Hero } from "@/components/portfolio/hero";
 import { NNgCertification } from "@/components/portfolio/nn-g-certification";
 import { Offer } from "@/components/portfolio/offer";
+import { ProjectsOverview } from "@/components/portfolio/projects-overview";
 import { Testimonials } from "@/components/portfolio/testimonials";
 import { WhyMe } from "@/components/portfolio/why-me";
 import { WorkedFor } from "@/components/portfolio/worked-for";
@@ -14,6 +15,7 @@ export default function Home() {
       <main className={`flex flex-col bg-black ${sectionGapClassName}`}>
         <Hero />
         <Offer />
+        <ProjectsOverview />
         <Testimonials />
         <WhyMe />
         <WorkedFor />

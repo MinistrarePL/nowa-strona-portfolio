@@ -2,8 +2,7 @@
 
 import { TestimonialsCarousel } from "@/components/portfolio/testimonials-carousel";
 import { Container } from "@/components/layout/container";
-import { sectionTitleClassName } from "@/components/layout/section-styles";
-import { GlassButton } from "@/components/ui/glass-button";
+import { sectionTitleClassName, outlineButtonClassName } from "@/components/layout/section-styles";
 
 export function Testimonials() {
   return (
@@ -16,15 +15,14 @@ export function Testimonials() {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <GlassButton
-            size="lg"
-            className="border-emerald-300 bg-emerald-300 text-black shadow-none hover:bg-emerald-200 hover:text-black before:hidden"
-            asChild
+          <a
+            href="https://www.linkedin.com/in/mateuszglasek/"
+            target="_blank"
+            rel="noreferrer"
+            className={outlineButtonClassName}
           >
-            <a href="https://www.linkedin.com/in/mateuszglasek/" target="_blank" rel="noreferrer">
-              See more on LinkedIn
-            </a>
-          </GlassButton>
+            See more on LinkedIn
+          </a>
         </div>
       </Container>
     </section>
