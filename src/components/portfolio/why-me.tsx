@@ -69,7 +69,7 @@ export function WhyMe() {
         <div className="absolute inset-0 bg-linear-to-b from-black/25 via-black/55 to-black/90" />
       </div>
 
-      <Container className="relative z-10">
+      <Container className="relative z-10 pb-8">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12 xl:gap-16">
           <div>
             <h2 className="text-[clamp(1.625rem,3.5vw,2.5rem)] leading-tight text-white">

@@ -76,7 +76,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative h-dvh overflow-hidden">
+    <section className="relative h-dvh overflow-hidden bg-black">
       <div className="absolute inset-0">
         <Aurora
           colorStops={["#6ee7b7", "#67e8f9", "#6ee7b7"]}

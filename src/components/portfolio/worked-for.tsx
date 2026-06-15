@@ -27,7 +27,7 @@ const companies = [
 
 export function WorkedFor() {
   return (
-    <section className="bg-black pb-20 md:pb-24">
+    <section className="bg-black py-16">
       <Container>
         <h2 className={sectionTitleClassName}>I worked for</h2>
 

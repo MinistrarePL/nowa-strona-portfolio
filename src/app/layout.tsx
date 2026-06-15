@@ -26,9 +26,9 @@ export default function RootLayout({
   return (
     <html
       lang="pl"
-      className={`${manrope.variable} ${abyssinica.variable} dark h-full antialiased`}
+      className={`${manrope.variable} ${abyssinica.variable} dark h-full bg-black antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#050505] font-sans text-foreground">
+      <body className="min-h-full flex flex-col bg-black font-sans text-foreground">
         {children}
       </body>
     </html>

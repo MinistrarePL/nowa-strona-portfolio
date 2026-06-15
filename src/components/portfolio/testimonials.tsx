@@ -7,7 +7,7 @@ import { GlassButton } from "@/components/ui/glass-button";
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="bg-black">
+    <section id="testimonials" className="bg-black pt-12">
       <Container>
         <h2 className={sectionTitleClassName}>Received Testimonials</h2>
 
