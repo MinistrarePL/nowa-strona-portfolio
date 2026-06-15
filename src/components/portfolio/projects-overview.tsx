@@ -40,7 +40,7 @@ export function ProjectsOverview() {
       <Container>
         <h2 className={sectionTitleClassName}>Projects Overview</h2>
 
-        <div className="mt-12 md:mt-16">
+        <div className="mt-8 md:mt-12">
           <ProjectStack
             activeIndex={activeIndex}
             onSelect={setActiveIndex}
