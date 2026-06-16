@@ -2,7 +2,7 @@
 
 import { Container } from "@/components/layout/container";
 import { ProjectStack } from "@/components/portfolio/project-stack";
-import { sectionTitleClassName } from "@/components/layout/section-styles";
+import { sectionTitleClassName, outlineButtonClassName } from "@/components/layout/section-styles";
 import { useState } from "react";
 
 const projects = [
@@ -46,6 +46,12 @@ export function ProjectsOverview() {
             onSelect={setActiveIndex}
             items={projects}
           />
+
+          <div className="mt-8 flex justify-center md:mt-10">
+            <a href="#contact" className={outlineButtonClassName}>
+              Connect me to get full portfolio
+            </a>
+          </div>
         </div>
       </Container>
     </section>

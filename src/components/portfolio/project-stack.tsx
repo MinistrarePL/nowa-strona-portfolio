@@ -20,6 +20,8 @@ interface ProjectStackProps {
 const TITLE_PEEK = 76;
 /** Total card height; body below the title overlaps the card in front. */
 const CARD_HEIGHT = 268;
+/** Nudge the rearmost card slightly lower for a cleaner stack silhouette. */
+const REARMOST_Y_OFFSET = 16;
 
 const springTransition = {
   type: "spring" as const,
@@ -42,6 +44,14 @@ function getTitleTone(distance: number) {
 function getBodyTone(distance: number) {
   if (distance === 0) return "text-white/85";
   return "text-white/50";
+}
+
+function getStackTransform(distance: number) {
+  return {
+    scale: 1 - distance * 0.068,
+    rotateX: distance * 4,
+    opacity: Math.max(0.72, 1 - distance * 0.08),
+  };
 }
 
 export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps) {
@@ -81,7 +91,9 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
           {items.map((item, index) => {
             const distance = getStackDistance(index, activeIndex, total);
             const isFront = distance === 0;
-            const y = (total - 1 - distance) * TITLE_PEEK;
+            const isRearmost = distance === total - 1;
+            const y =
+              (total - 1 - distance) * TITLE_PEEK + (isRearmost ? REARMOST_Y_OFFSET : 0);
 
             return (
               <motion.div
@@ -103,11 +115,7 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
                 <motion.div
                   className="h-full [transform-style:preserve-3d]"
                   initial={false}
-                  animate={{
-                    scale: 1 - distance * 0.068,
-                    rotateX: distance * 4,
-                    opacity: Math.max(0.72, 1 - distance * 0.08),
-                  }}
+                  animate={getStackTransform(distance)}
                   transition={transition}
                   style={{ transformOrigin: "top center" }}
                 >
@@ -136,7 +144,7 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
                       className={cn(
                         "flex shrink-0 items-center px-6 sm:px-8 md:px-10 lg:px-12",
                         !isFront &&
-                          "pointer-events-auto cursor-pointer border-b border-white/25 transition-colors hover:bg-white/[0.04]",
+                          "group pointer-events-auto cursor-pointer border-b border-white/25 transition-colors hover:bg-white/[0.04]",
                       )}
                       style={{ height: TITLE_PEEK }}
                       onClick={
@@ -164,6 +172,8 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
                         className={cn(
                           "line-clamp-2 text-lg leading-snug transition-colors sm:text-xl md:text-2xl lg:text-3xl lg:leading-tight",
                           getTitleTone(distance),
+                          !isFront &&
+                            "group-hover:text-emerald-300 group-focus-visible:text-emerald-300",
                         )}
                       >
                         {item.title}
