@@ -70,6 +70,12 @@ const bodyTextClassName = "text-sm leading-7 md:text-base md:leading-8";
 const bodyLinkClassName =
   "text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 transition-colors hover:text-emerald-200";
 
+const logoWrapClassName = "py-3 md:py-4";
+
+const logoBoxClassName = "flex h-7 max-w-[220px] items-center md:h-8";
+
+const logoImageClassName = "max-h-full max-w-full object-contain object-left";
+
 function renderParagraph(content: ProjectParagraph) {
   if (typeof content === "string") {
     return content;
@@ -137,14 +143,16 @@ function ProjectCardBody({
       >
         <div className="min-w-0 flex-1 space-y-2.5">
           {item.logo ? (
-            <div className="py-3 md:py-4">
-              <Image
-                src={item.logo.src}
-                alt={item.logo.alt}
-                width={280}
-                height={60}
-                className="h-7 w-auto md:h-8"
-              />
+            <div className={logoWrapClassName}>
+              <div className={logoBoxClassName}>
+                <Image
+                  src={item.logo.src}
+                  alt={item.logo.alt}
+                  width={280}
+                  height={60}
+                  className={logoImageClassName}
+                />
+              </div>
             </div>
           ) : null}
           {item.paragraphs.map((paragraph, paragraphIndex) => (
@@ -270,7 +278,7 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
   return (
     <div className="flex w-full items-stretch gap-5 md:gap-8">
       <div
-        className="flex shrink-0 flex-col items-center justify-center gap-1.5 self-center py-2"
+        className="hidden shrink-0 flex-col items-center justify-center gap-1.5 self-center py-2 md:flex"
         aria-label="Project navigation"
       >
         <StackArrow direction="up" label="Previous project" onClick={goToPrevious} />

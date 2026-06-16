@@ -1,6 +1,7 @@
 import { Footer } from "@/components/layout/footer";
 import { sectionGapClassName } from "@/components/layout/section-styles";
 import { Contact } from "@/components/portfolio/contact";
+import { Header } from "@/components/portfolio/header";
 import { Hero } from "@/components/portfolio/hero";
 import { NNgCertification } from "@/components/portfolio/nn-g-certification";
 import { Offer } from "@/components/portfolio/offer";
@@ -12,6 +13,7 @@ import { WorkedFor } from "@/components/portfolio/worked-for";
 export default function Home() {
   return (
     <>
+      <Header />
       <main className={`flex flex-col bg-black ${sectionGapClassName}`}>
         <Hero />
         <Offer />

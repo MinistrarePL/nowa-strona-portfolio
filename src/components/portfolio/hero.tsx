@@ -3,11 +3,11 @@
 import Aurora from "@/components/Aurora";
 import { Container } from "@/components/layout/container";
 import { outlineButtonClassName } from "@/components/layout/section-styles";
-import { Header } from "@/components/portfolio/header";
+import { smoothScrollToHash } from "@/lib/smooth-scroll";
 import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 
-const tags = ["#finance", "#fintech", "#investing"] as const;
+const tags = ["#finance", "#fintech", "#investing", "#education"] as const;
 
 const MAX_SCALE = 1.35;
 const MIN_SCALE = 0.45;
@@ -89,8 +89,6 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 flex h-full flex-col">
-        <Header />
-
         <div ref={viewportRef} className="relative min-h-0 flex-1 overflow-hidden">
           <Container className="absolute inset-0 flex items-center justify-center">
             <div
@@ -118,8 +116,8 @@ export function Hero() {
 
               <p className="mt-[clamp(0.625rem,2vh,2rem)] text-[clamp(0.9375rem,2.4vh,1.625rem)] leading-[1.5] text-white/75">
                 I am Lead Product Designer focused on delivering value to both the user and the
-                business, while working within the available budget and technology constraints.
-                It&apos;s as simple as that.
+                business, while working within the available budget and technology constraints.{" "}
+                <span className="whitespace-nowrap">It&apos;s as simple as that.</span>
               </p>
 
               <div className="mt-[clamp(0.625rem,2vh,2.25rem)] flex flex-wrap items-center justify-center gap-x-[clamp(0.75rem,2vw,1.5rem)] gap-y-2">
@@ -133,12 +131,17 @@ export function Hero() {
                 ))}
               </div>
 
-              <button
-                type="button"
+              <a
+                href="#offer"
                 className={`mt-[clamp(0.875rem,2.5vh,2.75rem)] shrink-0 ${outlineButtonClassName}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  smoothScrollToHash("#offer");
+                  window.history.pushState(null, "", "#offer");
+                }}
               >
                 More
-              </button>
+              </a>
             </div>
           </Container>
         </div>

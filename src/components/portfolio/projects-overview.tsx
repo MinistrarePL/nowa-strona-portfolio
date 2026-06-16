@@ -46,10 +46,22 @@ const projects = [
     ],
   },
   {
-    id: "business",
-    title: "Shaping business",
-    description:
-      "Product and UX work for B2B teams — aligning user needs with business goals, stakeholder expectations, and delivery timelines.",
+    id: "teaching-others",
+    title: "Teaching others",
+    logo: {
+      src: "/logos/future-collars.png",
+      alt: "Future Collars",
+    },
+    paragraphs: [
+      [
+        "Teaching others is the best way to learn yourself. I really followed this advice in my career as a few years ago I created a UX bootcamp in cooperation with ",
+        { href: "https://futurecollars.com/", label: "Future Collars" },
+        ".",
+      ],
+      "The course was created on my own initiative as a result of my constant striving for improvement. I developed the course based on a modern cohort training formula, weaving in specific methods of effective learning. I led the whole process of creating the course, working with subcontractors, creating a formula for working with FC or marketing activities. This is one of the initiatives where my leadership skills have really come to the fore.",
+      "My UX course is available to Amazon employees as part of the Career Choice programme.",
+      "Many of the students I personally mentored are now working as UX designers.",
+    ],
   },
   {
     id: "one-man-army",

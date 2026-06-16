@@ -31,7 +31,7 @@ export function WorkedFor() {
       <Container>
         <h2 className={sectionTitleClassName}>I worked for</h2>
 
-        <ul className="mt-10 grid grid-cols-4 items-center gap-x-[clamp(0.375rem,1.5vw,1.5rem)] md:mt-12">
+        <ul className="mt-10 flex flex-col items-center gap-8 md:mt-12 md:grid md:grid-cols-4 md:items-center md:gap-x-[clamp(0.375rem,1.5vw,1.5rem)] md:gap-y-0">
           {companies.map((company) => (
             <li key={company.name} className="group flex min-w-0 justify-center">
               <Image
