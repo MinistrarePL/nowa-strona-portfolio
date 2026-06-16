@@ -3,11 +3,37 @@
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
+import Image from "next/image";
+import {
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type MouseEvent,
+} from "react";
+
+interface ProjectParagraphLink {
+  href: string;
+  label: string;
+}
+
+type ProjectParagraph = string | readonly (string | ProjectParagraphLink)[];
 
 interface ProjectItem {
   id: string;
   title: string;
-  description: string;
+  description?: string;
+  paragraphs?: readonly ProjectParagraph[];
+  imageSlot?: boolean;
+  logo?: {
+    src: string;
+    alt: string;
+  };
+  image?: {
+    src: string;
+    alt: string;
+  };
 }
 
 interface ProjectStackProps {
@@ -18,8 +44,8 @@ interface ProjectStackProps {
 
 /** Visible strip per card — must fit the full title (no clipping). */
 const TITLE_PEEK = 76;
-/** Total card height; body below the title overlaps the card in front. */
-const CARD_HEIGHT = 268;
+/** Fallback height before content is measured. */
+const CARD_HEIGHT_FALLBACK = 268;
 /** Nudge the rearmost card slightly lower for a cleaner stack silhouette. */
 const REARMOST_Y_OFFSET = 16;
 
@@ -29,6 +55,43 @@ const springTransition = {
   damping: 32,
   mass: 0.9,
 };
+
+const titleClassName =
+  "line-clamp-2 text-lg leading-snug sm:text-xl md:text-2xl lg:text-3xl lg:leading-tight";
+
+const titleStripClassName =
+  "flex shrink-0 items-center px-6 sm:px-8 md:px-10 lg:px-12";
+
+const bodyShellClassName =
+  "flex flex-col px-6 pb-5 pt-0 sm:px-8 md:px-10 md:pb-6 lg:px-12 lg:pb-7";
+
+const bodyTextClassName = "text-sm leading-7 md:text-base md:leading-8";
+
+const bodyLinkClassName =
+  "text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 transition-colors hover:text-emerald-200";
+
+function renderParagraph(content: ProjectParagraph) {
+  if (typeof content === "string") {
+    return content;
+  }
+
+  return content.map((part, partIndex) =>
+    typeof part === "string" ? (
+      part
+    ) : (
+      <a
+        key={`${part.href}-${partIndex}`}
+        href={part.href}
+        target="_blank"
+        rel="noreferrer"
+        className={bodyLinkClassName}
+        onClick={(event) => event.stopPropagation()}
+      >
+        {part.label}
+      </a>
+    ),
+  );
+}
 
 function getStackDistance(index: number, activeIndex: number, total: number) {
   return (index - activeIndex + total) % total;
@@ -54,10 +117,146 @@ function getStackTransform(distance: number) {
   };
 }
 
+function ProjectCardBody({
+  item,
+  distance,
+}: {
+  item: ProjectItem;
+  distance: number;
+}) {
+  const bodyTone = getBodyTone(distance);
+  const showImageSlot = item.imageSlot === true || item.image !== undefined;
+
+  if (item.paragraphs) {
+    return (
+      <div
+        className={cn(
+          "flex flex-col gap-4 md:gap-6",
+          showImageSlot && "md:flex-row md:items-start",
+        )}
+      >
+        <div className="min-w-0 flex-1 space-y-2.5">
+          {item.logo ? (
+            <div className="py-3 md:py-4">
+              <Image
+                src={item.logo.src}
+                alt={item.logo.alt}
+                width={280}
+                height={60}
+                className="h-7 w-auto md:h-8"
+              />
+            </div>
+          ) : null}
+          {item.paragraphs.map((paragraph, paragraphIndex) => (
+            <p
+              key={paragraphIndex}
+              className={cn(bodyTextClassName, bodyTone)}
+            >
+              {renderParagraph(paragraph)}
+            </p>
+          ))}
+        </div>
+
+        {showImageSlot ? (
+          <div className="hidden w-[min(38%,240px)] shrink-0 md:block">
+            {item.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={item.image.src}
+                alt={item.image.alt}
+                className="aspect-[4/5] w-full rounded-2xl object-cover"
+              />
+            ) : (
+              <div
+                className="aspect-[4/5] w-full rounded-2xl border border-dashed border-white/15 bg-white/[0.03]"
+                aria-hidden
+              />
+            )}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <p className={cn(bodyTextClassName, bodyTone)}>
+      {item.description}
+    </p>
+  );
+}
+
+function ProjectCardMeasure({
+  item,
+  measureRef,
+}: {
+  item: ProjectItem;
+  measureRef: (node: HTMLDivElement | null) => void;
+}) {
+  return (
+    <div ref={measureRef} className="w-full">
+      <div className="flex flex-col overflow-hidden rounded-[28px] border border-emerald-300/35 bg-black/92 md:rounded-[36px]">
+        <div className={titleStripClassName} style={{ height: TITLE_PEEK }}>
+          <h3 className={cn(titleClassName, "text-white")}>{item.title}</h3>
+        </div>
+        <div className={cn(bodyShellClassName, "bg-black/40")}>
+          <ProjectCardBody item={item} distance={0} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function useCardHeights(items: readonly ProjectItem[]) {
+  const measureRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [heights, setHeights] = useState<number[]>(() =>
+    items.map(() => CARD_HEIGHT_FALLBACK),
+  );
+
+  const measure = useCallback(() => {
+    setHeights(
+      items.map((_, index) => {
+        const node = measureRefs.current[index];
+        return node?.getBoundingClientRect().height ?? CARD_HEIGHT_FALLBACK;
+      }),
+    );
+  }, [items]);
+
+  useLayoutEffect(() => {
+    measure();
+  }, [measure]);
+
+  useLayoutEffect(() => {
+    const observers = measureRefs.current
+      .filter((node): node is HTMLDivElement => node !== null)
+      .map((node) => {
+        const observer = new ResizeObserver(measure);
+        observer.observe(node);
+        return observer;
+      });
+
+    window.addEventListener("resize", measure);
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+      window.removeEventListener("resize", measure);
+    };
+  }, [measure, items]);
+
+  const setMeasureRef = useCallback(
+    (index: number) => (node: HTMLDivElement | null) => {
+      measureRefs.current[index] = node;
+    },
+    [],
+  );
+
+  return { heights, setMeasureRef, measure };
+}
+
 export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps) {
   const shouldReduceMotion = useReducedMotion();
   const total = items.length;
-  const stackHeight = (total - 1) * TITLE_PEEK + CARD_HEIGHT + 8;
+  const { heights: cardHeights, setMeasureRef } = useCardHeights(items);
+  const activeCardHeight = cardHeights[activeIndex] ?? CARD_HEIGHT_FALLBACK;
+  const stackHeight = (total - 1) * TITLE_PEEK + activeCardHeight + 8;
   const transition = shouldReduceMotion ? { duration: 0 } : springTransition;
 
   const goToPrevious = () => {
@@ -80,13 +279,25 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
       </div>
 
       <div
-        className="min-w-0 flex-1 [perspective:1500px] [perspective-origin:center_68%]"
+        className="relative min-w-0 flex-1 [perspective:1500px] [perspective-origin:center_68%]"
         role="listbox"
         aria-label="Projects"
       >
-        <div
-          className="relative w-full [transform-style:preserve-3d]"
-          style={{ minHeight: stackHeight }}
+        <div aria-hidden className="pointer-events-none absolute w-full opacity-0">
+          {items.map((item, index) => (
+            <ProjectCardMeasure
+              key={`measure-${item.id}`}
+              item={item}
+              measureRef={setMeasureRef(index)}
+            />
+          ))}
+        </div>
+
+        <motion.div
+          className="relative w-full overflow-hidden [transform-style:preserve-3d]"
+          initial={false}
+          animate={{ height: stackHeight }}
+          transition={transition}
         >
           {items.map((item, index) => {
             const distance = getStackDistance(index, activeIndex, total);
@@ -94,6 +305,7 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
             const isRearmost = distance === total - 1;
             const y =
               (total - 1 - distance) * TITLE_PEEK + (isRearmost ? REARMOST_Y_OFFSET : 0);
+            const fullHeight = cardHeights[index] ?? CARD_HEIGHT_FALLBACK;
 
             return (
               <motion.div
@@ -109,7 +321,7 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
                 transition={transition}
                 style={{
                   zIndex: total - distance,
-                  height: CARD_HEIGHT,
+                  height: fullHeight,
                 }}
               >
                 <motion.div
@@ -129,7 +341,7 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
                     onClick={isFront ? () => onSelect(index) : undefined}
                     onKeyDown={
                       isFront
-                        ? (event) => {
+                        ? (event: KeyboardEvent<HTMLDivElement>) => {
                             if (event.key === "Enter" || event.key === " ") {
                               event.preventDefault();
                               onSelect(index);
@@ -142,14 +354,14 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
                   >
                     <div
                       className={cn(
-                        "flex shrink-0 items-center px-6 sm:px-8 md:px-10 lg:px-12",
+                        titleStripClassName,
                         !isFront &&
                           "group pointer-events-auto cursor-pointer border-b border-white/25 transition-colors hover:bg-white/[0.04]",
                       )}
                       style={{ height: TITLE_PEEK }}
                       onClick={
                         !isFront
-                          ? (event) => {
+                          ? (event: MouseEvent<HTMLDivElement>) => {
                               event.stopPropagation();
                               onSelect(index);
                             }
@@ -157,7 +369,7 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
                       }
                       onKeyDown={
                         !isFront
-                          ? (event) => {
+                          ? (event: KeyboardEvent<HTMLDivElement>) => {
                               if (event.key === "Enter" || event.key === " ") {
                                 event.preventDefault();
                                 onSelect(index);
@@ -170,7 +382,8 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
                     >
                       <h3
                         className={cn(
-                          "line-clamp-2 text-lg leading-snug transition-colors sm:text-xl md:text-2xl lg:text-3xl lg:leading-tight",
+                          titleClassName,
+                          "transition-colors",
                           getTitleTone(distance),
                           !isFront &&
                             "group-hover:text-emerald-300 group-focus-visible:text-emerald-300",
@@ -182,26 +395,19 @@ export function ProjectStack({ activeIndex, onSelect, items }: ProjectStackProps
 
                     <div
                       className={cn(
-                        "flex flex-1 flex-col px-6 pb-5 pt-0 sm:px-8 md:px-10 md:pb-7 lg:px-12 lg:pb-8",
+                        bodyShellClassName,
                         isFront ? "bg-black/40" : "bg-black/55",
                       )}
                       aria-hidden={!isFront}
                     >
-                      <p
-                        className={cn(
-                          "text-sm leading-7 md:text-base md:leading-8",
-                          getBodyTone(distance),
-                        )}
-                      >
-                        {item.description}
-                      </p>
+                      <ProjectCardBody item={item} distance={distance} />
                     </div>
                   </div>
                 </motion.div>
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
