@@ -56,7 +56,7 @@ function ReasonCard({
 
 export function WhyMe() {
   return (
-    <section id="why-me" className="relative isolate overflow-hidden bg-black">
+    <section id="why-me" className="relative isolate overflow-hidden bg-black pt-16 md:pt-0">
       <div className="pointer-events-none absolute inset-0">
         <DotGrid
           dotSize={8}
@@ -69,9 +69,9 @@ export function WhyMe() {
         <div className="absolute inset-0 bg-linear-to-b from-black/25 via-black/55 to-black/90" />
       </div>
 
-      <Container className="relative z-10 pb-8">
+      <Container className="relative z-10 pb-4 md:pb-8">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12 xl:gap-16">
-          <div>
+          <div className="text-center md:text-left">
             <h2 className="text-[clamp(1.625rem,3.5vw,2.5rem)] leading-tight text-white">
               Why to Work with Me?
             </h2>
