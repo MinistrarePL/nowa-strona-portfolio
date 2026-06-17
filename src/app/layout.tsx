@@ -14,7 +14,7 @@ const abyssinica = Abyssinica_SIL({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio",
+  title: "Mateusz Głasek - Lead Product Designer",
   description: "Portfolio personalne",
   icons: {
     icon: [{ url: "/images/profile.png", type: "image/png" }],
