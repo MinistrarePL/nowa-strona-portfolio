@@ -65,9 +65,17 @@ const projects = [
   },
   {
     id: "one-man-army",
-    title: "One man army",
-    description:
-      "End-to-end delivery across research, UI, prototyping, and no-code builds — a single designer-owner moving ideas from concept to shippable product.",
+    title: "Helping with first steps",
+    logo: {
+      src: "/logos/netguru.svg",
+      alt: "Netguru",
+    },
+    paragraphs: [
+      "At Netguru, I was part of a large design team of around 90 designers with different specializations. It was a great opportunity for professional development and for broadening my perspective.",
+      "The most interesting projects I was involved in were related to UX audits and reviews, which are among my favourite UX tasks, as well as designing a mobile investing app for a brokerage firm, where I led the design process.",
+      "Apart from handling complex requirements in that project, the most satisfying and unique part was the user research and testing. We created the research strategy and conducted a series of professionally prepared moderated usability tests, along with unmoderated tests using Lyssna. It was part of broader market research for a new product.",
+      "Another project worth mentioning was for a US-based financial startup, where we had to handle a very dynamic and unstable environment, with new requirements being added or changed rapidly between the startup's funding rounds. It was an exhausting but very valuable experience.",
+    ],
   },
 ] as const;
 
