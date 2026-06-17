@@ -16,6 +16,10 @@ const abyssinica = Abyssinica_SIL({
 export const metadata: Metadata = {
   title: "Portfolio",
   description: "Portfolio personalne",
+  icons: {
+    icon: [{ url: "/images/profile.png", type: "image/png" }],
+    apple: [{ url: "/images/profile.png", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
